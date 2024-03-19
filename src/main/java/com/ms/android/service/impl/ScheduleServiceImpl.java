@@ -4,11 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ms.android.entity.Schedule;
 import com.ms.android.repository.ScheduleRepository;
 import com.ms.android.service.ScheduleService;
-
+@Service
 public class ScheduleServiceImpl implements ScheduleService{
 	@Autowired
 	private ScheduleRepository scheduleRepository;
@@ -21,7 +22,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Override
 	public List<Schedule> find(LocalDateTime fromDateTime, LocalDateTime toDateTime) {
 		// TODO Auto-generated method stub
-		return scheduleRepository.findByTimeGreaterThanEqualAndAndLessThanEqual(fromDateTime, toDateTime);
+//		return scheduleRepository.findByTimeGreaterThanEqualAndAndLessThanEqual(fromDateTime, toDateTime);
+		return null;
 	}
 
 	@Override

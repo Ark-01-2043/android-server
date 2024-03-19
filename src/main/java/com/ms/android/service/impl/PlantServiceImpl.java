@@ -22,7 +22,8 @@ public class PlantServiceImpl implements PlantService{
 	@Override
 	public List<Plant> find(String keyword) {
 		// TODO Auto-generated method stub
-		return plantRepository.findByTen_cayContaining(keyword);
+		return null;
+//		return plantRepository.findByTen_cayContaining(keyword);
 	}
 
 	@Override

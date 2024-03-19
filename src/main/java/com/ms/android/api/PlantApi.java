@@ -26,10 +26,10 @@ public class PlantApi {
 	public ResponseEntity<?> get(@PathVariable int id){
 		return ResponseEntity.ok(plantService.get(id));
 	}
-	@GetMapping
-	public ResponseEntity<?> find(@RequestParam(name = "keyword") String keyword){
-		return ResponseEntity.ok(plantService.find(keyword));
-	}
+//	@GetMapping
+//	public ResponseEntity<?> find(@RequestParam(name = "keyword") String keyword){
+//		return ResponseEntity.ok(plantService.find(keyword));
+//	}
 	@PostMapping
 	public ResponseEntity<?> save(@RequestBody Plant plant){
 		return ResponseEntity.ok(plantService.save(plant));
