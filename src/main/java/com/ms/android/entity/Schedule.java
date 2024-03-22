@@ -15,6 +15,25 @@ public class Schedule {
 	private int moisture;
 	private LocalDateTime time;
 	private int repeat;
+	private boolean auto;
+	private int plantId;
+	private boolean isActive = true;
+	private boolean isDeleted = false;
+	public Schedule(Integer id, int moisture, LocalDateTime time, int repeat, boolean auto, int plantId,
+			boolean isActive, boolean isDeleted) {
+		super();
+		this.id = id;
+		this.moisture = moisture;
+		this.time = time;
+		this.repeat = repeat;
+		this.auto = auto;
+		this.plantId = plantId;
+		this.isActive = isActive;
+		this.isDeleted = isDeleted;
+	}
+	public Schedule() {
+		super();
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -39,15 +58,31 @@ public class Schedule {
 	public void setRepeat(int repeat) {
 		this.repeat = repeat;
 	}
-	public Schedule(Integer id, int moisture, LocalDateTime time, int repeat) {
-		super();
-		this.id = id;
-		this.moisture = moisture;
-		this.time = time;
-		this.repeat = repeat;
+	public boolean isAuto() {
+		return auto;
 	}
-	public Schedule() {
-		super();
+	public void setAuto(boolean auto) {
+		this.auto = auto;
 	}
+	public int getPlantId() {
+		return plantId;
+	}
+	public void setPlantId(int plantId) {
+		this.plantId = plantId;
+	}
+	public boolean isActive() {
+		return isActive;
+	}
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	
 	
 }
