@@ -10,4 +10,5 @@ import com.ms.android.entity.Schedule;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer>{
 //	List<Schedule> findByTimeGreaterThanEqualAndAndLessThanEqual(LocalDateTime fromDateTime, LocalDateTime toDateTime);
+	List<Schedule> findByDeleted(boolean deleted);
 }

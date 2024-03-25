@@ -4,22 +4,43 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.dialect.function.NvlCoalesceEmulation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ms.android.dto.ScheduleDto;
+import com.ms.android.entity.Plant;
 import com.ms.android.entity.Schedule;
+import com.ms.android.repository.PlantRepository;
 import com.ms.android.repository.ScheduleRepository;
 import com.ms.android.service.ScheduleService;
 @Service
 public class ScheduleServiceImpl implements ScheduleService{
 	@Autowired
 	private ScheduleRepository scheduleRepository;
+	@Autowired
+	private PlantRepository plantRepository;
+	public ScheduleDto toDto(Schedule schedule) {
+		Plant plant = null;
+		if (schedule.isAuto()) {
+			plant =plantRepository.findById(schedule.getPlantId()).get();
+		}
+		return ScheduleDto.builder().id(schedule.getId())
+				.moisture(schedule.isAuto()?  plant.getMinIdealSoilMoisture()+"%-"+plant.getMaxIdealSoilMoisture()+"%" : schedule.getMoisture()+"%")
+				.isActive(schedule.isActive())
+				.isDeleted(schedule.isDeleted())
+				.repeat(schedule.getRepeat())
+				.time(schedule.getTime())
+				.build();
+	}
 	@Override
-	public List<Schedule> getAll() {
+	public List<ScheduleDto> getAll() {
 		// TODO Auto-generated method stub
-		return scheduleRepository.findAll();
+		List<ScheduleDto> list = new ArrayList<>();
+		scheduleRepository.findByDeleted(false).stream().forEach((item) -> list.add(toDto(item)));
+		return list;
 	}
 
 	@Override
@@ -38,6 +59,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Override
 	public Schedule save(Schedule schedule) {
 		// TODO Auto-generated method stub
+		
 		return scheduleRepository.save(schedule);
 	}
 	public int compareLocalDateTime(LocalDateTime localDateTime, LocalDateTime localDateTime2) {
@@ -56,6 +78,21 @@ public class ScheduleServiceImpl implements ScheduleService{
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public Schedule get(int id) {
+		// TODO Auto-generated method stub
+		return scheduleRepository.findById(id).get();
+	}
+
+	@Override
+	public Schedule delete(int id) {
+		// TODO Auto-generated method stub
+		Schedule schedule = scheduleRepository.findById(id).get();
+		schedule.setDeleted(false);
+		scheduleRepository.save(schedule);
+		return schedule;
 	}
 	
 

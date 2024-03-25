@@ -7,8 +7,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
+import lombok.Data;
 
 @Entity
+@Builder
+@Data
 public class History {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,33 +21,7 @@ public class History {
 	@ManyToOne
 	private Schedule schedule;
 	
-	public History(Integer id, LocalDateTime time, Schedule schedule) {
-		super();
-		this.id = id;
-		this.time = time;
-		this.schedule = schedule;
-	}
-	public History() {
-		super();
-	}
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public LocalDateTime getTime() {
-		return time;
-	}
-	public void setTime(LocalDateTime time) {
-		this.time = time;
-	}
-	public Schedule getSchedule() {
-		return schedule;
-	}
-	public void setSchedule(Schedule schedule) {
-		this.schedule = schedule;
-	}
+	
 	
 	
 }
