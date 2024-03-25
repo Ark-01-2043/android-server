@@ -22,6 +22,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	private ScheduleRepository scheduleRepository;
 	@Autowired
 	private PlantRepository plantRepository;
+	@Override
 	public ScheduleDto toDto(Schedule schedule) {
 		Plant plant = null;
 		if (schedule.isAuto()) {
@@ -29,7 +30,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 		}
 		return ScheduleDto.builder().id(schedule.getId())
 				.moisture(schedule.isAuto()?  plant.getMinIdealSoilMoisture()+"%-"+plant.getMaxIdealSoilMoisture()+"%" : schedule.getMoisture()+"%")
-				.isActive(schedule.isActive())
+				.isActive(schedule.isActived())
 				.isDeleted(schedule.isDeleted())
 				.repeat(schedule.getRepeat())
 				.time(schedule.getTime())
@@ -91,6 +92,14 @@ public class ScheduleServiceImpl implements ScheduleService{
 		// TODO Auto-generated method stub
 		Schedule schedule = scheduleRepository.findById(id).get();
 		schedule.setDeleted(false);
+		scheduleRepository.save(schedule);
+		return schedule;
+	}
+	@Override
+	public Schedule active(int id) {
+		// TODO Auto-generated method stub
+		Schedule schedule = scheduleRepository.findById(id).get();
+		schedule.setActived(!schedule.isActived());
 		scheduleRepository.save(schedule);
 		return schedule;
 	}

@@ -2,28 +2,15 @@ package com.ms.android.dto;
 
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ScheduleSearchDto {
 	private LocalDateTime fromDate;
 	private LocalDateTime toDate;
-	public LocalDateTime getFromDate() {
-		return fromDate;
-	}
-	public void setFromDate(LocalDateTime fromDate) {
-		this.fromDate = fromDate;
-	}
-	public LocalDateTime getToDate() {
-		return toDate;
-	}
-	public void setToDate(LocalDateTime toDate) {
-		this.toDate = toDate;
-	}
-	public ScheduleSearchDto(LocalDateTime fromDate, LocalDateTime toDate) {
-		super();
-		this.fromDate = fromDate;
-		this.toDate = toDate;
-	}
-	public ScheduleSearchDto() {
-		super();
-	}
+	
 	
 }

@@ -2,21 +2,17 @@ package com.ms.android.dto;
 
 import java.time.LocalDateTime;
 
+import com.ms.android.entity.Schedule;
+
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class ScheduleDto {
-	private Integer id;
-	private String moisture;
+@AllArgsConstructor
+public class HistoryAddDto {
 	private LocalDateTime time;
-	private int repeat;
-	private boolean isActive;
-	private boolean isDeleted;
 	
-	
+	private int schedule_id;
 }
