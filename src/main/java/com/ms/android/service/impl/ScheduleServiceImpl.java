@@ -51,7 +51,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 		// TODO Auto-generated method stub
 		List<Schedule> schedules = scheduleRepository.findAll();
 		for (Schedule schedule2 : schedules) {
-			if (compareLocalDateTime(schedule.getTime(), schedule2.getTime()) == 0) {
+			if (compareLocalDateTime(schedule.getTime(), schedule2.getTime()) == 0 && schedule.getId() != schedule2.getId()) {
 				return false;
 			}
 		}

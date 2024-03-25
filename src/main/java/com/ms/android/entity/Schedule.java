@@ -6,19 +6,23 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "schedules")
 public class Schedule {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	
 	private int moisture;
 	private LocalDateTime time;
 	private int repeat;
 	private boolean auto;
 	private int plantId;
-	private boolean isActive = true;
-	private boolean isDeleted = false;
+	private boolean isActive;
+	private boolean isDeleted;
 	public Schedule(Integer id, int moisture, LocalDateTime time, int repeat, boolean auto, int plantId,
 			boolean isActive, boolean isDeleted) {
 		super();

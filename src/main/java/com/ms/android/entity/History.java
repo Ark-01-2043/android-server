@@ -7,15 +7,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import com.ms.android.entity.Schedule;
+
 @Entity
 public class History {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private LocalDateTime time;
-	@ManyToOne(targetEntity = Schedule.class)
+	@ManyToOne
 	private Schedule schedule;
+	
 	public History(Integer id, LocalDateTime time, Schedule schedule) {
 		super();
 		this.id = id;
