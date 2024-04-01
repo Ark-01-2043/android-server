@@ -22,6 +22,7 @@ import org.springframework.web.service.annotation.PostExchange;
 import com.ms.android.dto.ScheduleDto;
 import com.ms.android.dto.ScheduleSearchDto;
 import com.ms.android.entity.Schedule;
+import com.ms.android.exception.ResourceExistedException;
 import com.ms.android.service.ScheduleService;
 
 @RestController
@@ -37,12 +38,16 @@ public class ScheduleApi {
 		return ResponseEntity.ok(scheduleService.getAll());
 		
 	}
+	@GetMapping("/{id}")
+	public ResponseEntity<?> get(@PathVariable("id") int id){
+		return ResponseEntity.ok(scheduleService.get(id));
+	}
 	@PostMapping("/search")
 	public ResponseEntity<?> search(@RequestBody ScheduleSearchDto scheduleSearchDto){
 		return ResponseEntity.ok(scheduleService.find(scheduleSearchDto.getFromDate(), scheduleSearchDto.getToDate()));
 	}
 	@PostMapping()
-	public ResponseEntity<?> save(@RequestBody Schedule schedule){
+	public ResponseEntity<?> save(@RequestBody Schedule schedule) throws ResourceExistedException{
 		
 		return ResponseEntity.ok(scheduleService.save(schedule));
 	}

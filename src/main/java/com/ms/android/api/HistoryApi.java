@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ms.android.dto.HistoryAddDto;
+import com.ms.android.dto.ScheduleSearchDto;
 import com.ms.android.entity.History;
 import com.ms.android.service.HistoryService;
 
@@ -36,5 +37,13 @@ public class HistoryApi {
 	public ResponseEntity<?> delete(@PathVariable(name="id") int id){
 		historyService.delete(id);
 		return ResponseEntity.ok("Xóa thành công");
+	}
+	@PostMapping("/search")
+	public ResponseEntity<?> search(@RequestBody ScheduleSearchDto scheduleSearchDto){
+		return ResponseEntity.ok(historyService.find(scheduleSearchDto.getFromDate(), scheduleSearchDto.getToDate()));
+	}
+	@GetMapping("/chart")
+	public ResponseEntity<?> top7(){
+		return ResponseEntity.ok(historyService.getRecentHistories());
 	}
 }

@@ -14,6 +14,7 @@ public class ScheduleDto {
 	private Integer id;
 	private String moisture;
 	private LocalDateTime time;
+	private boolean auto;
 	private int repeat;
 	private boolean isActive;
 	private boolean isDeleted;

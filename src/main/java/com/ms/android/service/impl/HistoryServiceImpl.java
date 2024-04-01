@@ -2,6 +2,7 @@ package com.ms.android.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,10 +56,13 @@ public class HistoryServiceImpl implements HistoryService{
 		return historyRepository.save(history);
 	}
 	public int compareLocalDateTime(LocalDateTime localDateTime, LocalDateTime localDateTime2) {
-		if (localDateTime.getHour() == localDateTime2.getHour()) {
-			return localDateTime.getMinute() - localDateTime2.getMinute();
+		if (localDateTime.getYear() == localDateTime2.getYear()) {
+			if (localDateTime.getMonthValue() == localDateTime2.getMonthValue()) {
+				return localDateTime.getDayOfMonth() - localDateTime2.getDayOfMonth();
+ 			}
+			return localDateTime.getMonthValue() - localDateTime2.getMonthValue();
 		}
-		return localDateTime.getHour() - localDateTime2.getHour();
+		return localDateTime.getYear() - localDateTime2.getYear();
 	}
 	@Override
 	public List<HistoryDto> find(LocalDateTime fromDateTime, LocalDateTime toDateTime) {
@@ -74,6 +78,31 @@ public class HistoryServiceImpl implements HistoryService{
 	public void delete(int id) {
 		// TODO Auto-generated method stub
 		historyRepository.deleteById(id);
+	}
+	@Override
+	public List<HistoryDto> getRecentHistories() {
+		// TODO Auto-generated method stub
+		List<HistoryDto> historyDtos = getAll();
+		historyDtos.sort(new Comparator<HistoryDto>() {
+			@Override
+			public int compare(HistoryDto o1, HistoryDto o2) {
+				// TODO Auto-generated method stub
+				return o2.getTime().compareTo(o1.getTime());
+			}
+		});
+		List<HistoryDto> ans = new ArrayList<>();
+		for (int i = 0; i < historyDtos.size() && i < 7; i++) {
+			ans.add(historyDtos.get(i));
+			
+		}
+		ans.sort(new Comparator<HistoryDto>() {
+			@Override
+			public int compare(HistoryDto o1, HistoryDto o2) {
+				// TODO Auto-generated method stub
+				return o1.getTime().compareTo(o2.getTime());
+			}
+		});
+		return ans;
 	}
 	
 }

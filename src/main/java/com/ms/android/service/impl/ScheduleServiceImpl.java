@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.ms.android.dto.ScheduleDto;
 import com.ms.android.entity.Plant;
 import com.ms.android.entity.Schedule;
+import com.ms.android.exception.ResourceExistedException;
 import com.ms.android.repository.PlantRepository;
 import com.ms.android.repository.ScheduleRepository;
 import com.ms.android.service.ScheduleService;
@@ -22,6 +23,14 @@ public class ScheduleServiceImpl implements ScheduleService{
 	private ScheduleRepository scheduleRepository;
 	@Autowired
 	private PlantRepository plantRepository;
+	public boolean isExisted(Schedule schedule) {
+		boolean isExisted = false;
+		List<Schedule> schedules = scheduleRepository.findAll();
+		return schedules.stream().filter((item) -> 
+			item.getTime().getHour() == schedule.getTime().getHour() && item.getTime().getMinute() == schedule.getTime().getMinute() && item.getId() != schedule.getId()			
+		).collect(Collectors.toList()).size() > 0;
+		
+	}
 	@Override
 	public ScheduleDto toDto(Schedule schedule) {
 		Plant plant = null;
@@ -29,18 +38,19 @@ public class ScheduleServiceImpl implements ScheduleService{
 			plant =plantRepository.findById(schedule.getPlantId()).get();
 		}
 		return ScheduleDto.builder().id(schedule.getId())
-				.moisture(schedule.isAuto()?  plant.getMinIdealSoilMoisture()+"%-"+plant.getMaxIdealSoilMoisture()+"%" : schedule.getMoisture()+"%")
+				.moisture(schedule.isAuto()?  (int)plant.getMinIdealSoilMoisture()+"%-"+(int)plant.getMaxIdealSoilMoisture()+"%" : schedule.getMoisture()+"%")
 				.isActive(schedule.isActived())
 				.isDeleted(schedule.isDeleted())
 				.repeat(schedule.getRepeat())
 				.time(schedule.getTime())
+				.auto(schedule.isAuto())
 				.build();
 	}
 	@Override
 	public List<ScheduleDto> getAll() {
 		// TODO Auto-generated method stub
 		List<ScheduleDto> list = new ArrayList<>();
-		scheduleRepository.findByDeleted(false).stream().forEach((item) -> list.add(toDto(item)));
+		scheduleRepository.findByDeleted(false).stream().forEach((item) -> {list.add(toDto(item)); System.out.println(item.getId());});
 		return list;
 	}
 
@@ -58,9 +68,11 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 
 	@Override
-	public Schedule save(Schedule schedule) {
+	public Schedule save(Schedule schedule) throws ResourceExistedException {
 		// TODO Auto-generated method stub
-		
+		if(isExisted(schedule)) {
+			throw new ResourceExistedException("Lịch tưới đã tồn tại");
+		}
 		return scheduleRepository.save(schedule);
 	}
 	public int compareLocalDateTime(LocalDateTime localDateTime, LocalDateTime localDateTime2) {
@@ -91,7 +103,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	public Schedule delete(int id) {
 		// TODO Auto-generated method stub
 		Schedule schedule = scheduleRepository.findById(id).get();
-		schedule.setDeleted(false);
+		schedule.setDeleted(true);
 		scheduleRepository.save(schedule);
 		return schedule;
 	}

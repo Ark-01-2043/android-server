@@ -14,4 +14,5 @@ public interface HistoryService {
 	public History save(HistoryAddDto historyAddDto);
 	public void delete(int id);
 	public List<HistoryDto> find(LocalDateTime fromDateTime, LocalDateTime toDateTime);
+	public List<HistoryDto> getRecentHistories();
 }
