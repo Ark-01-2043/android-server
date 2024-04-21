@@ -1,5 +1,6 @@
 package com.ms.android.service.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -44,6 +45,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 				.repeat(schedule.getRepeat())
 				.time(schedule.getTime())
 				.auto(schedule.isAuto())
+				.nextTime(schedule.getNextTime())
 				.build();
 	}
 	@Override
@@ -73,6 +75,12 @@ public class ScheduleServiceImpl implements ScheduleService{
 		if(isExisted(schedule)) {
 			throw new ResourceExistedException("Lịch tưới đã tồn tại");
 		}
+		LocalDateTime localDateTime = LocalDate.now().atTime(schedule.getTime().toLocalTime());
+		LocalDateTime nowDateTime = LocalDateTime.now();
+		if (nowDateTime.isAfter(localDateTime)) {
+			localDateTime = localDateTime.plusDays(1);
+		}
+		schedule.setNextTime(localDateTime);
 		return scheduleRepository.save(schedule);
 	}
 	public int compareLocalDateTime(LocalDateTime localDateTime, LocalDateTime localDateTime2) {
@@ -112,8 +120,30 @@ public class ScheduleServiceImpl implements ScheduleService{
 		// TODO Auto-generated method stub
 		Schedule schedule = scheduleRepository.findById(id).get();
 		schedule.setActived(!schedule.isActived());
+		if (schedule.isActived()) {
+			LocalDateTime localDateTime = LocalDate.now().atTime(schedule.getTime().toLocalTime());
+			LocalDateTime nowDateTime = LocalDateTime.now();
+			if (nowDateTime.isAfter(localDateTime)) {
+				localDateTime = localDateTime.plusDays(1);
+			}
+			schedule.setNextTime(localDateTime);
+		}
 		scheduleRepository.save(schedule);
 		return schedule;
+	}
+	@Override
+	public List<LocalDateTime> getUpcomingSchedule() {
+		// TODO Auto-generated method stub
+		List<Schedule> schedules = scheduleRepository.findByDeleted(false);
+		
+		return schedules.stream().map((item) -> {
+			LocalDateTime localDateTime = LocalDate.now().atTime(item.getTime().toLocalTime());
+			LocalDateTime nowDateTime = LocalDateTime.now();
+			if (nowDateTime.isAfter(localDateTime)) {
+				return localDateTime.plusDays(1);
+			}
+			return localDateTime;
+		}).toList();
 	}
 	
 

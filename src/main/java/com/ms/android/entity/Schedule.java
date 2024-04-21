@@ -29,6 +29,7 @@ public class Schedule {
 	private int plantId;
 	private boolean actived;
 	private boolean deleted;
+	private LocalDateTime nextTime;
 	
 	
 	

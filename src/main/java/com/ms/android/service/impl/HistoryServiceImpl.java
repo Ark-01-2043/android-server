@@ -1,5 +1,6 @@
 package com.ms.android.service.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,6 +14,7 @@ import com.ms.android.dto.HistoryAddDto;
 import com.ms.android.dto.HistoryDto;
 import com.ms.android.dto.ScheduleDto;
 import com.ms.android.entity.History;
+import com.ms.android.entity.Schedule;
 import com.ms.android.repository.HistoryRepository;
 import com.ms.android.repository.ScheduleRepository;
 import com.ms.android.service.HistoryService;
@@ -103,6 +105,26 @@ public class HistoryServiceImpl implements HistoryService{
 			}
 		});
 		return ans;
+	}
+	@Override
+	public HistoryDto runSchedule(int scheduleId) {
+		// TODO Auto-generated method stub
+		Schedule schedule = scheduleService.get(scheduleId);
+		History history = History.builder().schedule(schedule)
+							.time(LocalDateTime.now())
+							.build();
+		history = historyRepository.save(history);
+		LocalDateTime localDateTime = schedule.getNextTime().plusDays(1);
+		if (schedule.getRepeat() == 0) {
+			schedule.setActived(false);
+			
+		} else if (schedule.getRepeat() == 2) {
+			localDateTime = localDateTime.plusDays(1);
+		} else if (schedule.getRepeat() == 3) {
+			localDateTime = localDateTime.plusDays(6);
+		}
+		scheduleRepository.save(schedule);
+		return toDto(history);
 	}
 	
 }

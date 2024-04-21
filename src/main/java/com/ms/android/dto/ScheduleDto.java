@@ -18,6 +18,7 @@ public class ScheduleDto {
 	private int repeat;
 	private boolean isActive;
 	private boolean isDeleted;
+	private LocalDateTime nextTime;
 	
 	
 }

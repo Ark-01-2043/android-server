@@ -16,4 +16,5 @@ public interface ScheduleService {
 	public Schedule get(int id);
 	public Schedule delete(int id);
 	public Schedule active(int id);
+	public List<LocalDateTime> getUpcomingSchedule();
 }

@@ -15,4 +15,5 @@ public interface HistoryService {
 	public void delete(int id);
 	public List<HistoryDto> find(LocalDateTime fromDateTime, LocalDateTime toDateTime);
 	public List<HistoryDto> getRecentHistories();
+	public HistoryDto runSchedule(int scheduleId);
 }
