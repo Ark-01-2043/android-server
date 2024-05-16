@@ -55,7 +55,7 @@ public class ScheduleApi {
 	public ResponseEntity<?> delete(@PathVariable(name = "id") int id){
 		return ResponseEntity.ok(scheduleService.delete(id));
 	}
-	@PatchMapping("/{id}")
+	@GetMapping("/active/{id}")
 	public ResponseEntity<?> patch(@PathVariable(name = "id") int id){
 		return ResponseEntity.ok(scheduleService.active(id));
 	}
