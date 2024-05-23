@@ -46,7 +46,7 @@ public class HistoryApi {
 	public ResponseEntity<?> top7(){
 		return ResponseEntity.ok(historyService.getRecentHistories());
 	}
-	@PostMapping("/run/{id}")
+	@GetMapping("/run/{id}")
 	public ResponseEntity<?> runSchedule(@PathVariable("id") int schedule_id){
 		return ResponseEntity.ok(historyService.runSchedule(schedule_id));
 	}
